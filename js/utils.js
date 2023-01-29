@@ -35,7 +35,7 @@
 // }
 //
 
-import { CELL_VALUE, GAME_STATUS } from "./constants.js";
+import { CELL_VALUE, GAME_STATUS, TURN } from "./constants.js";
 import {
     getCellElementAtIdx,
     getCurrentTurnElement,
@@ -92,4 +92,45 @@ export function checkGameStatus(cellValues) {
         status: isEndGame ? GAME_STATUS.ENDED : GAME_STATUS.PLAYING,
         winPositions: [],
     };
+}
+
+export function toggleTurn(currentTurn) {
+    //toggle turn
+    const current = currentTurn === TURN.CROSS ? TURN.CIRCLE : TURN.CROSS;
+
+    // update turn on DOM element
+    const currentTurnElement = getCurrentTurnElement();
+    if (currentTurnElement) {
+        currentTurnElement.classList.remove(TURN.CIRCLE, TURN.CROSS);
+        currentTurnElement.classList.add(current);
+    }
+    return { current };
+}
+
+export function updategameStatus(newGameStatus) {
+    const gameStatusElement = getGameStatusElement();
+    if (gameStatusElement) gameStatusElement.textContent = newGameStatus;
+}
+
+export function showReplaybutton() {
+    const replayButton = getReplayButtonElement();
+    if (replayButton) replayButton.classList.add("show");
+}
+
+export function hideReplaybutton() {
+    const replayButton = getReplayButtonElement();
+    if (replayButton) {
+        replayButton.classList.remove("add");
+    }
+}
+
+export function highlightWinCell(winPositions) {
+    if (!Array.isArray(winPositions) || winPositions.length !== 3) {
+        throw new Error("Invalid win position");
+    }
+
+    for (const position of winPositions) {
+        const cell = getCellElementAtIdx(position);
+        if (cell) cell.classList.add("win");
+    }
 }

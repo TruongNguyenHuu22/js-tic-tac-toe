@@ -1,12 +1,17 @@
 import { CELL_VALUE, GAME_STATUS, TURN } from "./constants.js";
 import {
-    getCellElementAtIdx,
     getCellElementList,
     getCurrentTurnElement,
-    getGameStatusElement,
     getReplayButtonElement,
 } from "./selectors.js";
-import { checkGameStatus } from "./utils.js";
+import {
+    checkGameStatus,
+    toggleTurn,
+    updategameStatus,
+    showReplaybutton,
+    hideReplaybutton,
+    highlightWinCell,
+} from "./utils.js";
 
 /**
  * Global variables
@@ -15,53 +20,13 @@ let currentTurn = TURN.CROSS;
 let gameStatus = GAME_STATUS.PLAYING;
 let cellValues = new Array(9).fill("");
 
-function toggleTurn() {
-    //toggle turn
-    currentTurn = currentTurn === TURN.CROSS ? TURN.CIRCLE : TURN.CROSS;
-
-    // update turn on DOM element
-    const currentTurnElement = getCurrentTurnElement();
-    if (currentTurnElement) {
-        currentTurnElement.classList.remove(TURN.CIRCLE, TURN.CROSS);
-        currentTurnElement.classList.add(currentTurn);
-    }
-}
-
-function updategameStatus(newGameStatus) {
-    gameStatus = newGameStatus;
-
-    const gameStatusElement = getGameStatusElement();
-    if (gameStatusElement) gameStatusElement.textContent = newGameStatus;
-}
-function showReplaybutton() {
-    const replayButton = getReplayButtonElement();
-    if (replayButton) replayButton.classList.add("show");
-}
-
-function hideReplaybutton() {
-    const replayButton = getReplayButtonElement();
-    if (replayButton) {
-        replayButton.classList.remove("add");
-    }
-}
-
-function highlightWinCell(winPositions) {
-    if (!Array.isArray(winPositions) || winPositions.length !== 3) {
-        throw new Error("Invalid win position");
-    }
-
-    for (const position of winPositions) {
-        const cell = getCellElementAtIdx(position);
-        if (cell) cell.classList.add("win");
-    }
-}
-
 function handleCellClick(cell, index) {
     const isClicked =
         cell.classList.contains(TURN.CIRCLE) ||
         cell.classList.contains(TURN.CROSS);
 
     const isEndGame = gameStatus !== GAME_STATUS.PLAYING;
+
     if (isClicked || isEndGame) return;
 
     // set selected cell
@@ -72,13 +37,14 @@ function handleCellClick(cell, index) {
         currentTurn === TURN.CIRCLE ? CELL_VALUE.CIRCLE : CELL_VALUE.CROSS;
 
     //toggle turn
-    toggleTurn();
+    currentTurn = toggleTurn(currentTurn).current;
 
     //check game status
     const game = checkGameStatus(cellValues);
     switch (game.status) {
         case GAME_STATUS.ENDED: {
             //update game status
+            gameStatus = game.status;
             updategameStatus(game.status);
             //show replay button
             showReplaybutton();
@@ -87,6 +53,7 @@ function handleCellClick(cell, index) {
         case GAME_STATUS.X_WIN:
         case GAME_STATUS.O_WIN:
             //update game status
+            gameStatus = game.status;
             updategameStatus(game.status);
             //show replay button
             showReplaybutton();
