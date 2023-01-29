@@ -1,9 +1,9 @@
-# Tic tac toe game 
+# Tic tac toe game
 
-A simple tic tac toe game using vanilla javascript.
-This repo is used for teaching purpose.
+A simple tic tac toe game using javascript.
+This repo is used for practicing purpose.
 
-Demo: [https://paultictactoe.surge.sh/](https://paultictactoe.surge.sh/)
+Demo: [https://truongnguyenhuu22.github.io/js-tic-tac-toe/](https://truongnguyenhuu22.github.io/js-tic-tac-toe/)
 
 ## Game elements
 
