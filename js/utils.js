@@ -120,7 +120,7 @@ export function showReplaybutton() {
 export function hideReplaybutton() {
     const replayButton = getReplayButtonElement();
     if (replayButton) {
-        replayButton.classList.remove("add");
+        replayButton.classList.remove("show");
     }
 }
 
