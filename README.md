@@ -5,6 +5,8 @@ This repo is used for practicing purpose.
 
 Demo: [https://truongnguyenhuu22.github.io/js-tic-tac-toe/](https://truongnguyenhuu22.github.io/js-tic-tac-toe/)
 
+or deployment vercel: [https://js-tic-tac-toe-kappa.vercel.app/](https://js-tic-tac-toe-kappa.vercel.app/)
+
 ## Game elements
 
 | Element             | Available class    | Desc                                    |
